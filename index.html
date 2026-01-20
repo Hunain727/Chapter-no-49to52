@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Assignment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+        .read-more {
+            color: blue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= 1. SIGNUP FORM ================= -->
+<h2>1. Signup Form</h2>
+<form id="signupForm">
+    <input type="text" id="name" placeholder="Enter Name" required><br>
+    <input type="email" id="email" placeholder="Enter Email" required><br>
+    <input type="password" id="password" placeholder="Enter Password" required><br>
+    <button type="submit">Sign Up</button>
+</form>
+
+<p id="signupResult"></p>
+
+<hr>
+
+<!-- ================= 2. READ MORE ================= -->
+<h2>2. Item Details</h2>
+<p>
+    This is a smart watch with basic features.
+    <span id="moreText" class="hidden">
+        It includes heart rate monitoring, sleep tracking, GPS, water resistance,
+        long battery life, and mobile notifications.
+    </span>
+</p>
+<span class="read-more" onclick="toggleReadMore()">Read more</span>
+
+<hr>
+
+<!-- ================= 3. STUDENT TABLE ================= -->
+<h2>3. Student Details</h2>
+
+<form id="studentForm">
+    <input type="text" id="studentName" placeholder="Student Name" required>
+    <input type="number" id="studentAge" placeholder="Age" required>
+    <input type="text" id="studentClass" placeholder="Class" required>
+    <button type="submit">Add Student</button>
+</form>
+
+<!-- Hidden Edit Form -->
+<form id="editForm" class="hidden">
+    <h3>Edit Student</h3>
+    <input type="text" id="editName" required>
+    <input type="number" id="editAge" required>
+    <input type="text" id="editClass" required>
+    <button type="button" onclick="updateStudent()">Update</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Class</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="studentTable"></tbody>
+</table>
+
+<script>
+    /* ---------- 1. SIGNUP FORM ---------- */
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        document.getElementById("signupResult").innerText =
+            "Signup Successful! Name: " + name + ", Email: " + email;
+    });
+
+    /* ---------- 2. READ MORE ---------- */
+    function toggleReadMore() {
+        const moreText = document.getElementById("moreText");
+        const btn = document.querySelector(".read-more");
+
+        if (moreText.classList.contains("hidden")) {
+            moreText.classList.remove("hidden");
+            btn.innerText = "Read less";
+        } else {
+            moreText.classList.add("hidden");
+            btn.innerText = "Read more";
+        }
+    }
+
+    /* ---------- 3. STUDENT TABLE ---------- */
+    let selectedRow = null;
+
+    document.getElementById("studentForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = studentName.value;
+        const age = studentAge.value;
+        const cls = studentClass.value;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${cls}</td>
+            <td>
+                <button onclick="editStudent(this)">Edit</button>
+                <button onclick="deleteStudent(this)">Delete</button>
+            </td>
+        `;
+        document.getElementById("studentTable").appendChild(row);
+        this.reset();
+    });
+
+    function deleteStudent(btn) {
+        btn.parentElement.parentElement.remove();
+    }
+
+    function editStudent(btn) {
+        selectedRow = btn.parentElement.parentElement;
+        editName.value = selectedRow.cells[0].innerText;
+        editAge.value = selectedRow.cells[1].innerText;
+        editClass.value = selectedRow.cells[2].innerText;
+        editForm.classList.remove("hidden");
+    }
+
+    function updateStudent() {
+        selectedRow.cells[0].innerText = editName.value;
+        selectedRow.cells[1].innerText = editAge.value;
+        selectedRow.cells[2].innerText = editClass.value;
+        editForm.classList.add("hidden");
+    }
+</script>
+
+</body>
+</html>
